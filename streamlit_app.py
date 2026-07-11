@@ -16,12 +16,9 @@ st.set_page_config(page_title="Document Q&A (RAG)", page_icon="📄")
 st.title("Document Question Answering System")
 st.write("Upload a PDF and ask questions about its content.")
 
-# Sidebar lets you control how many chunks get retrieved without editing code.
-# Fewer chunks = more focused context (better for precise facts).
-# More chunks = broader context (better for summary-style questions).
-with st.sidebar:
-    st.header("Settings")
-    top_k = st.slider("Number of chunks to retrieve (Top-K)", min_value=1, max_value=8, value=3)
+# Top-K set to 2 based on testing: fewer, more focused chunks gave more
+# precise answers than a wider Top-K, especially for fact-based questions.
+TOP_K = 2
 
 
 @st.cache_resource
@@ -72,7 +69,7 @@ if uploaded_file is not None:
 
         with st.spinner("Retrieving relevant context and generating answer..."):
             retrieved_results = retrieve_relevant_chunks(
-                st.session_state["vector_store"], user_query, top_k=top_k
+                st.session_state["vector_store"], user_query, top_k=TOP_K
             )
             answer = generate_answer(llm_pipeline, user_query, retrieved_results)
 
