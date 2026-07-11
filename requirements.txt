@@ -6,5 +6,5 @@ langchain-text-splitters
 pypdf
 sentence-transformers
 faiss-cpu
-transformers
-torch
+transformers==4.46.3
+torch==2.5.1
